@@ -1,0 +1,19 @@
+@font-face {
+    font-family: 'oswaldlight';
+    src: url('../fonts/oswald-light-webfont.eot');
+    src: url('../fonts/oswald-light-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/oswald-light-webfont.woff2') format('woff2'),
+         url('../fonts/oswald-light-webfont.woff') format('woff'),
+         url('../fonts/oswald-light-webfont.ttf') format('truetype'),
+         url('../fonts/oswald-light-webfont.svg#oswaldlight') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+div.siguenos{ float: left; width: 100%; height: auto; position: absolute; bottom: 0; background-color: black; opacity: 0.6; padding-bottom: 15px; padding-top: 15px;}
+div.siguenos img{float: left; top: none; position: inherit; }
+div.siguenos li {width: 40px; float: left; list-style: none; margin-left: 10px;}
+div.siguenos h2 {font-family: 'oswaldlight'; font-size: 18px; text-align: center; color: #FFF; padding: 0px;}
+
+span#bienvenido {color: #550909 !important;}

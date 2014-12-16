@@ -1,0 +1,851 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background-color:#E4E4E4;
+    background-image:linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-ms-linear-gradient(top, #A7A7A7 0%, #E4E4E4 51%);
+    background-image:-webkit-gradient(
+        linear,
+        left top,
+        left bottom,
+        color-stop(0, #A7A7A7),
+        color-stop(0.51, #E4E4E4)
+    );
+    background-attachment:fixed;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+.app {
+    background:url(../img/logo.png) no-repeat center top; /* 170px x 200px */
+    position:absolute;             /* position in the center of the screen */
+    left:50%;
+    top:50%;
+    height:50px;                   /* text area height */
+    width:225px;                   /* text area width */
+    text-align:center;
+    padding:180px 0px 0px 0px;     /* image height is 200px (bottom 20px are overlapped with text) */
+    margin:-115px 0px 0px -112px;  /* offset vertical: half of image height and text area height */
+                                   /* offset horizontal: half of text area width */
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+        background-position:left center;
+        padding:75px 0px 75px 170px;  /* padding-top + padding-bottom + text area = image height */
+        margin:-90px 0px 0px -198px;  /* offset vertical: half of image height */
+                                      /* offset horizontal: half of image width and text area width */
+    }
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+
+.container-logo {    
+    width: 100%;
+    background:url('../img/header_home.png') no-repeat ;
+    text-align: center;
+    padding: 7px;
+    background-size: cover;
+}
+
+.container-footer {
+    width: 100%;
+    background: #333333 ;
+    /*background: url('../img/aleros/footer_silver.png');
+    background-repeat: repeat-x;
+    background-repeat: repeat-y;*/
+
+    padding: 5px; 
+    height: 49px; 
+}
+.ui-link img {position: absolute; top: 10px;} 
+.perfilIcon.ui-link img { position: none; top: none;} 
+
+.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit {
+    border: none;
+}
+/*
+.container-logo a {
+    display: block;
+    float: left;
+    margin-top: 12px;
+}*/
+
+.container-loading {
+    width: 100%;
+    background-color: #2e2e2e;
+    text-align: center;
+    padding: 10px;
+}
+
+.container-img-loading {
+    width: 76px;
+    height: 214px;
+    background-color: #febd4b;
+    text-align: center;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+.base-loading, .liquido-loading {
+     position: absolute;
+}
+
+.base-loading {
+    z-index: 10;
+}
+
+.liquido-loading {
+    top: 30px;
+    left: 10px;
+}
+
+.text-loading {
+    color: #febc4b;
+}
+
+.banner {
+    text-align: center;
+    /*height:150px;*/
+    width: 100%;
+}
+
+.banner img {
+    width: 100%;
+    height: auto;
+}
+
+
+/**Mio no usarse*/
+/*.banner img {
+    width: 100%;
+    height: auto;
+    max-width: 480px;
+}*/
+
+
+/**Detalle Alero*/
+.contenedor-alero {
+   /* background-color: #000;*/
+    /*height: 300px;*/
+    /*height: 50%;*/
+    padding: 0;
+}
+
+.info-alero {
+    width: 40%;
+    /*float: left;*/
+    /*margin: 1%;*/
+}
+
+.foto-alero {
+    width: 60%;
+    /*float: right;*/
+    /*margin: 1%;*/
+}
+
+.info-alero h1 {
+    color: #fff;
+    text-transform:uppercase;
+    text-align: left;
+}
+
+.info-alero p {
+    color: #575757;
+}
+
+
+/*Promociones*/
+#previous-slide, #next-slide {
+    width: 20px;
+    height: 200px;
+    float: left;
+}
+
+.slide-mini {
+    width: 200px;
+    height: 200px;
+    float: left;
+}
+
+.clear {
+    clear: both;
+}
+
+ 
+.en-markup-crop-options {
+    top: 18px !important;
+    left: 50% !important;
+    margin-left: -90px !important;
+    width: 180px !important;
+    border: 2px rgba(255,255,255,.38) solid !important;
+    border-radius: 4px !important;
+}
+.en-markup-crop-options div div:first-of-type {
+    margin-left: 0px !important;
+}
+
+.ui-listview>.ui-li-divider {
+    height: 76px;
+    text-align: center;
+    padding: 10px;
+}
+
+.ui-overlay-a, .ui-page-theme-a, .ui-page-theme-a .ui-panel-wrapper {
+    background-color: #2e2e2e!important;
+}
+
+/*#map-canvas {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    position : absolute !important; 
+    top : 450px !important;  
+    right : 0; 
+    bottom : 0px !important;  
+    left : 0 !important;     
+}*/
+#map-canvas,#map-event-canvas, #map-event-canvas, #map-canvas-fiesta-gallo, #map-canvas-mifiesta, #map-canvas-invitacion, #map-event-canvas { width: 100%; height: 250px; padding: 0; }
+
+.ui-content {
+  padding: 0!important;
+}
+
+.hidden {
+    display: none;
+}
+
+
+
+.banner { height: 100px; text-align: center; }
+#map-canvas, #map-event-canvas, #map-canvas-fiesta-gallo, #map-canvas-mifiesta, #map-event-canvas { width: 100%; height: 250px; padding: 0; }
+
+/*============================ Style General ============================*/
+@font-face { font-family: 'FontAwesome'; src: url("../fonts/fontawesome-webfont.eot"); src: url("../fonts/fontawesome-webfont.eot?#iefix") format("embedded-opentype"), url("../fonts/fontawesome-webfont.woff") format("woff"), url("../fonts/fontawesome-webfont.ttf") format("truetype"); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'oswald_stencil'; src: url('../fonts/oswald-stencil.eot'); src: url('../fonts/oswald-stencil.eot?#iefix') format('embedded-opentype'), url('../fonts/oswald-stencil.woff2') format('woff2'), url('../fonts/oswald-stencil.woff') format('woff'), url('../fonts/oswald-stencil.ttf') format('truetype'), url('../fonts/oswald-stencil.svg#oswald_stencilregular') format('svg'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'oswald'; src: url('../fonts/oswald-regular.eot'); src: url('../fonts/oswald-regular.eot?#iefix') format('embedded-opentype'), url('../fonts/oswald-regular.woff2') format('woff2'), url('../fonts/oswald-regular.woff') format('woff'), url('../fonts/oswald-regular.ttf') format('truetype'), url('../fonts/oswald-regular.svg#oswaldbook') format('svg'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'oswald_bold'; src: url('../fonts/oswald-bold.eot'); src: url('../fonts/oswald-bold.eot?#iefix') format('embedded-opentype'), url('../fonts/oswald-bold.woff2') format('woff2'), url('../fonts/oswald-bold.woff') format('woff'), url('../fonts/oswald-bold.ttf') format('truetype'), url('../fonts/oswald-bold.svg#oswaldbold') format('svg'); font-weight: normal; font-style: normal; }
+@font-face { font-family: 'oswald_light'; src: url('../fonts/oswald-light.eot'); src: url('../fonts/oswald-light.eot?#iefix') format('embedded-opentype'), url('../fonts/oswald-light.woff') format('woff'), url('../fonts/oswald-light.ttf') format('truetype'), url('../fonts/oswald-light.svg#dinregular') format('svg'); font-weight: normal; font-style: normal; }
+
+*                                               { text-shadow: none !important; }
+html, body, div#wrapper                         { min-width: 100%; min-height: 100%; margin: 0px; padding: 0px; position: absolute; left: 0px; top: 0px; _width: 100%; _height: 100%; -o-height: 100%; }
+
+.ui-content                                     { padding: 0!important; } 
+body .ui-panel-page-container-themed .ui-page-active, 
+.ui-page-theme-a .ui-panel-wrapper              { background-color: transparent !important; } 
+        
+
+ul.navbar                                       { margin: 0px; padding: 0px; list-style: none; font-size: 0px; }
+ul.navbar li.inline                             { margin: 0px; display: inline-block; vertical-align: top; position: relative; /* IE 6-7 */*display: inline; *zoom: 1; }
+
+.typeButton                                     { margin: 3px 5px; padding: 10px 16px; font-size: 14px; color: #2E2E2E !important; text-decoration: none; display: inline-block; }
+.buttonYellow                                   { background: #FFBA00 !important; }
+.buttonRed                                      { background:red; }
+.buttonYellowBorder                             { border: 2px solid #FFBA00; padding-top: 5px; padding-bottom: 5px; padding-left: 10px; padding-right: 10px; color: #FFBA00 !important; font-size: 16px !important; }
+.buttonGreen                                    { background:url(../img/check.png) top right no-repeat; color: white !important; text-align: left !important; padding-left: 0px !important; padding-right: 30px !important; }
+.map-canvas                                     { width: 100%; height: 60%; padding: 0; }
+.perfilIcon                                     { float: right; margin-right: 65px;}
+/*
+.bg_pageBlack                                   { background: #000000 !important; }
+.bg_pageGray                                    { background: #2E2E2E !important; }
+*/
+/*============================ header ============================*/
+.ui-header                                      { background-color: transparent !important; border: none !important; }
+.container-logo                                 { height: 74px; text-align: center; position: relative; }
+.container-logo a                               { width: 44px; height: 45px; margin: -22px 0px 0px; display: block; position: absolute; top: 50%; left: 6px; }
+.container-logo a img                           { margin: 0px !important; position: relative; top: 0px; left: 0px; }
+.container-logo img                             { margin: -33px 0px 0px -72px; position: absolute; top: 50%; left: 56%; }
+
+
+/*============================ Body ============================*/
+/*.banner                                         { background: #0D0D0D; }*/
+.banner img                                     { width: auto; height: 100%; margin: 0px auto; display: block; }
+
+.main-menu                                      { margin: 0px !important; padding: 0px 0px 95px !important; background: transparent !important; }
+.main-menu a:hover, .main-menu a:focus,
+.main-menu a                                    { background: transparent !important; text-shadow: none !important; box-shadow: none !important; font-family: oswald_light; font-size: 22px; font-weight: normal !important; }
+
+/*
+a.ui-btn .icon-quesigafiesta                    { width: 70px; height: 48px; background: url('../img/menu_slide/icon-quesigalafiesta.png') repeat-y center left !important; display: inline-block; vertical-align: middle; }
+a.estado-active .icon-quesigafiesta             { background: url('../img/menu_slide/icon-quesigalafiesta-active.png') repeat-y center left !important; }
+
+a.ui-btn .icon-aleros                           { width: 70px; height: 48px; background: url('../img/menu_slide/icon-aleros.png') repeat-y center left !important; display: inline-block; vertical-align: middle; }
+a.estado-active .icon-aleros                    { background: url('../img/menu_slide/icon-aleros-active.png') repeat-y center left !important; }
+
+a.ui-btn .icon-calendario                       { width: 70px; height: 48px; background: url('../img/menu_slide/icon-calendario.png') repeat-y center left !important; display: inline-block; vertical-align: middle; }
+a.estado-active .icon-calendario                { background: url('../img/menu_slide/icon-calendario-active.png') repeat-y center left !important; }
+*/
+/*---*/
+a.ui-btn .icon-inicio                     { width: 70px; height: 48px; background: url('../img/menu_slide/icon-inicio.png') no-repeat center left !important; display: inline-block; vertical-align: middle; margin-left: 10px; }
+a.estado-active .icon-inicio                   { background: url('../img/menu_slide/icon-inicio-active.png') repeat-y center left !important; }
+
+a.ui-btn .icon-gallomusic                      { width: 70px; height: 48px; background: url('../img/menu_slide/icon-gallomusic.png') no-repeat center left !important; display: inline-block; vertical-align: middle; margin-left: 10px;}
+a.estado-active .icon-gallomusic               { background: url('../img/menu_slide/icon-gallomusic-active.png') repeat-y center left !important; }
+
+a.ui-btn .icon-quesigafiesta                    { width: 70px; height: 48px; background: url('../img/menu_slide/icon-quesigalafiesta.png') no-repeat center left !important; display: inline-block; vertical-align: middle; margin-left: 10px;}
+a.estado-active .icon-quesigafiesta             { background: url('../img/menu_slide/icon-quesigalafiesta.png') no-repeat center center !important; }
+
+a.ui-btn .icon-aleros                           { width: 70px; height: 48px; background: url('../img/menu_slide/icon-aleros.png') no-repeat center left !important; display: inline-block; vertical-align: middle;margin-left: 10px; }
+a.estado-active .icon-aleros                    { background: url('../img/menu_slide/icon-aleros-active.png') repeat-y center left !important; }
+
+a.ui-btn .icon-calendario                       { width: 70px; height: 48px; background: url('../img/menu_slide/icon-calendario.png') no-repeat center left !important; display: inline-block; vertical-align: middle; margin-left: 10px;}
+a.estado-active .icon-calendario                { background: url('../img/menu_slide/icon-calendario-active.png') repeat-y center left !important; }
+
+a.ui-btn .icon-video                           { width: 70px; height: 48px; background: url('../img/menu_slide/icon-video.png') no-repeat center left !important; display: inline-block; vertical-align: middle;margin-left: 10px; }
+a.estado-active .icon-video                    { background: url('../img/menu_slide/icon-video-active.png') repeat-y center left !important; }
+/*---*/
+
+
+
+ul.ui-listview li, ul.ui-listview li a          { background-color: transparent !important; border: none !important; }
+ul.ui-listview li.list-separador                { padding: 0px !important; display: none; }
+ul.ui-listview li.list-separador .item-separador{ width: 90%; max-width: 480px; height: 2px; margin: 0px auto; background: #FFF; opacity: 0.3; }
+
+.ui-focus                                       { box-shadow: none !important; }
+
+.div-row div.inline                             { display: inline-block; }
+.div-row div.valign-top                         { vertical-align: top; }
+.div-row div.valign-middle                      { vertical-align: middle; }
+.div-row div.valign-bottom                      { vertical-align: bottom; }
+
+.content-search                                 { height: 54px; margin: 12px 26px; border: 1px solid #f1EEEE; border-radius: 6px; line-height: 54px; position: relative; }
+.content-search .ui-input-text                  { margin: 0px 46px 0px 10px !important; border: none !important; background: none !important; box-shadow: none !important; }
+.content-search .ui-btn                         { margin: -14px 0px 0px; padding: 0px !important; background: none !important; border: none !important; font-family: FontAwesome; font-size: 27px !important; font-style: normal; color: #FFF !important; line-height: 27px; position: absolute; top: 50%; right: 5px; }
+.content-search .ui-btn:before                  { content: '\f002'; }
+.content-search input                           { height: 34px; display: inline-block !important; color: #FFF !important; text-shadow: none !important; }
+.content-search input:focus                     { box-shadow: none !important; -webkit-box-shadow: none !important; -moz-box-shadow: none !important; }
+
+@media screen and (max-height: 320px) {
+    .banner                                         { height: 100px; }
+    .content-search                                 { height: 40px; margin: 8px 20px; line-height: 40px; }
+    .content-search .ui-btn                         { font-size: 20px !important; line-height: 26px !important; }
+    .content-search input                           { height: 28px; }
+}
+
+/*============================ Footer ============================*/
+.ui-footer                                      { height: 60px; background-color: #333333 !important;  border: none !important; }
+
+/*============================ Page Principal ============================*/
+.page_home .main-menu a                         { border: none !important; text-align: center !important; font-family: 'oswaldlight' !important;}
+.page_home .main-menu a span                    { font-size: 22px !important; color: #FFF !important; text-align: left; font-family: 'oswaldlight'; }
+.page_home .text-menu                           { max-width: 190px !important; min-width: 124px !important; width: 100%; display: inline-block;  font-family: 'oswaldlight';}
+.page_home .main-menu a img                     { margin: 0px 25px 0px 0px; }
+.page_home hr { width: 80%; margin: 0 auto; background-color: white; height: 1px;  border: none;}
+
+.page_home div.ui-content{z-index: 9999 !important;}
+
+@media screen and (max-width: 320px) {
+    .page_home .main-menu a span                    { font-size: 18px !important; }
+    .page_home .main-menu a span.text-menu          { width: 64% !important; }
+}
+
+
+/*============================ Page Conectar Usuario ============================*/
+.page_conectarusuario .titulo_page              { margin: 20px; font-family: oswald; font-size: 38px; color: #FEBC4B; }
+.page_conectarusuario .list_buttons             { width: 75%; max-width: 600px; margin: 0px auto !important; }
+.page_conectarusuario .list_buttons li          { margin: 14px 0px; }
+.page_conectarusuario .btn_crearperfil          { height: 60px; padding: 1px 60px 1px 0px; border: 1px solid #FFF; font-family: oswald; font-size: 24px; color: #FFF !important; text-align: center; text-decoration: none !important; text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.95); line-height: 60px; display: block; position: relative; }
+.page_conectarusuario .icon-btn                 { width: 60px; height: 56px; border-left: 1px solid #FFF; font-family: FontAwesome; font-style: normal; color: #FFF !important; text-align: center; line-height: 58px; display: block; position: absolute; top: 2px; right: 0px; }
+
+.page_conectarusuario .btn_twitter              { border-color: #6BB4E7; color: #6BB4E7 !important; }
+.page_conectarusuario .btn_facebook             { border-color: #3664A2; color: #3664A2 !important; }
+.page_conectarusuario .icon-twitter             { border-color: #3664A2; color: #6BB4E7 !important; }
+.page_conectarusuario .icon-twitter:before      { content: '\f099'; }
+.page_conectarusuario .icon-facebook            { border-color: #3664A2; color: #3664A2 !important; }
+.page_conectarusuario .icon-facebook:before     { content: '\f09a'; }
+.page_conectarusuario .icon-user:before         { content: '\f007'; }
+
+@media screen and (max-width: 480px) {
+    .page_conectarusuario .list_buttons             { width: 85%; }
+    .page_conectarusuario .btn_crearperfil          { font-size: 16px !important; }
+}
+
+
+/*============================ Page Crear Perfil ============================*/
+.page_insert_user .titulo_page                  { height: 40px; background: #2E2E2E; color: #FFBA00; text-align: center; line-height: 40px; }
+.page_insert_user .content_form                 { width: 75%; max-width: 600px; margin: 0px auto !important; }
+.page_insert_user .content_form label           { margin: 10px 0px 0px; font-family: oswald_light; font-size: 24px; color: #FFF; }
+.page_insert_user .content_form .ui-input-text  { background: none !important; border: 1px solid #FFF; border-radius: 0px; }
+.page_insert_user .content_form .ui-input-text input{ color: #FFF; }
+.page_insert_user .content_form .typeButton     { margin: 14px 0px; padding: 6px 0px; font-family: oswald_light; font-size: 24px; color: #FFF; text-align: center; display: block; }
+
+
+/*============================ Page Iniciar sesión ============================*/
+.page_login_user .titulo_page                   { height: 40px; background: #2E2E2E; color: #FFBA00; text-align: center; line-height: 40px; }
+.page_login_user .content_form                  { width: 75%; max-width: 600px; margin: 0px auto !important; }
+.page_login_user .content_form label            { margin: 10px 0px 0px; font-family: oswald_light; font-size: 24px; color: #FFF; }
+.page_login_user .content_form .ui-input-text   { background: none !important; border: 1px solid #FFF; border-radius: 0px; }
+.page_login_user .content_form .ui-input-text input{ color: #FFF; }
+.page_login_user .content_form .typeButton      { margin: 14px 0px; margin: 14px 0px; padding: 6px 0px; font-family: oswald_light; font-size: 24px; color: #FFF; text-align: center; display: block; }
+
+
+/*============================ Page Que Siga la Fiesta ============================*/
+
+.page_homefista .ui-tabs                        { padding: 0px !important; }
+.page_homefista .ui-tabs .ui-tabs-nav           { background: #0D0D0D; border-bottom: 1px solid #484848 !important; }
+.page_homefista .ui-tabs a                      { background: transparent !important; border: none !important; font-family: oswald_light; font-size: 16px !important; font-weight: normal; color: #FFF; text-shadow: none !important; }
+.page_homefista .ui-tabs a:hover                { background: url('../img/aleros/hover_aleros2.png') !important; color: #FFF !important; }
+.page_homefista .ui-tabs a:focus                { box-shadow: none !important; }
+.page_homefista .ui-tabs .ui-tabs-active a      { background: #484848 !important; color: #FFF !important; }
+
+.page_homefista .ui-listview li                 { padding: 0px !important; background: none !important; border-top: 1px solid white !important;  border-bottom: 1px solid white !important; border-radius: 0px !important; }
+.page_homefista .ui-listview .content-peviewevent{ padding: 16px 0px 17px;/* background: url('../img/quesigalafiesta/bg_prevevento.png') bottom center no-repeat #0D0D0D !important;*/ text-align: center !important; display: block; }
+
+.page_homefista .content-add-event         { background: #212121 !important; border-top: 1px solid #484848 !important; border-bottom: 1px solid #484848 !important; position: relative; }
+.page_homefista .content-add-event a    { margin: 0px; background: none !important; border-radius: 0px !important; font-family: oswald_light; font-size: 20px !important; font-weight: bold; text-align: left; }
+
+.page_homefista .content-peviewevent .date      { display: inline-block; text-align: left; vertical-align: middle; }
+.page_homefista .content-peviewevent .diames    { font-family: oswald_light; font-size: 20px !important; font-weight: bold; color: #FFF }
+.page_homefista .content-peviewevent .hora      { font-family: oswald_light; font-size: 14px !important; color: #FFF }
+
+.page_homefista .content-peviewevent .event     { display: inline-block; text-align: left; vertical-align: middle; }
+.page_homefista .content-peviewevent .nombre    { font-family: oswald_light; font-size: 20px; font-weight: bold; color: #FFBA00; }
+.page_homefista .content-peviewevent .descripcion{ font-family: oswald_light; font-size: 14px; }
+.page_homefista .content-peviewevent .descripcion span{ font-weight: bold; color: #FFBA00; display: block; }
+
+
+.page_homefista .list_buttons                   { width: 75%; max-width : 600px; margin: 0px auto !important; }
+.page_homefista .list_buttons li                { margin: 14px 0px; }
+.page_homefista .btn_crearperfil                { height: 60px; padding: 1px 60px 1px 0px; border: 1px solid #FFF !important; font-family: oswald; font-size: 24px; color: #FFF !important; text-align: center; text-decoration: none !important; text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.95); line-height: 60px; display: block; position: relative; }
+.page_homefista .icon-btn                       { width: 60px; height: 56px; border-left: 1px solid #FFF; font-family: FontAwesome; font-style: normal; color: #FFF !important; text-align: center; line-height: 58px; display: block; position: absolute; top: 2px; right: 0px; }
+/*border: 1px solid #3664A2 !important;*/
+.page_homefista .btn_facebook                   { border-color: #3664A2; color: #3664A2 !important; }
+.page_homefista .icon-facebook                  { border-color: #3664A2; color: #3664A2 !important; }
+.page_homefista .icon-facebook:before           { content: '\f09a'; }
+@media screen and (max-width: 300px) {
+    .page_homefista .ui-tabs a                      { font-size: 12px !important; }
+}
+
+@media screen and (max-width: 480px) {
+    .page_homefista .list_buttons             { width: 85%; }
+    .page_homefista .btn_crearperfil          { font-size: 16px !important; }
+}
+
+/*============================ Page Info Fiesta ============================*/
+.page_fiesta_gallo .ui-tabs                        { padding: 0px !important; }
+.page_fiesta_gallo .ui-tabs .ui-tabs-nav           { background: #0D0D0D; border-bottom: 1px solid #484848 !important; }
+.page_fiesta_gallo .ui-tabs a                      { background: transparent !important; border: none !important; font-family: oswald_light; font-size: 16px !important; font-weight: normal; color: #FFF; text-shadow: none !important; }
+.page_fiesta_gallo .ui-tabs a:hover                { background: #666 !important; color: #FFF !important; }
+.page_fiesta_gallo .ui-tabs a:focus                { box-shadow: none !important; }
+.page_fiesta_gallo .ui-tabs .ui-tabs-active a      { background: #484848 !important; color: #FFF !important; }
+
+
+#detallefiesta_gallo .ui-content                     { /*background: #000000 !important; */}
+#detallefiesta_gallo .contenedor-fiesta-gallo               { max-width: 600px; margin: 0px auto; white-space: nowrap; }
+#detallefiesta_gallo .contenedor-fiesta-gallo .info-fiesta-gallo   { width: 100%; /*padding: 0px 5% 0px 0px;*/ display: inline-block; vertical-align: top; white-space: normal; float: left;}
+
+#detallefiesta_gallo .info-fiesta-gallo .nombre-fiesta-gallo       { font-family: oswald_light; font-size: 24px; font-weight: bold; color: #FFF; }
+#detallefiesta_gallo .info-fiesta-gallo .telefono-fiesta-gallo     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detallefiesta_gallo .info-fiesta-gallo .direccion-fiesta-gallo     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detallefiesta_gallo .info-fiesta-gallo .descrip-fiesta-gallo      { margin: 10px 0px 0px; color: #FFF; }
+
+#detallefiesta_gallo .contenedor-fiesta-gallo .foto-fiesta-gallo   { width: 100%; height: auto; display: inline-block; vertical-align: top; text-align: right; overflow: hidden; float: left; margin-top: -1px; }
+#detallefiesta_gallo .foto-fiesta-gallo img                 { width: 100%; margin: 0px auto 0px !important; display: block; }
+#detallefiesta_gallo .titulo-ubicacion-fiesta-gallo         { height: 40px; background: #2E2E2E; color: #ffba00; text-align: center; line-height: 40px; }
+#detallefiesta_gallo .btns_compartir            { text-align: center; }
+
+#detallefiesta_gallo .accordion h4              { position: relative; }
+#detallefiesta_gallo .accordion .centrar-detalle{ padding: 10px 16px; }
+
+@media screen and (max-width: 500px) {
+    #detallefiesta_gallo .btns_compartir .typeButton{ font-size: 12px !important; }
+}
+
+
+
+
+/*============================ Page Info Mi Fiesta ============================*/
+.page_mifiesta .ui-tabs                        { padding: 0px !important; }
+.page_mifiesta .ui-tabs .ui-tabs-nav           { background: #0D0D0D; border-bottom: 1px solid #484848 !important; }
+.page_mifiesta .ui-tabs a                      { background: transparent !important; border: none !important; font-family: oswald_light; font-size: 16px !important; font-weight: normal; color: #FFF; text-shadow: none !important; }
+.page_mifiesta .ui-tabs a:hover                { background: #666 !important; color: #FFF !important; }
+.page_mifiesta .ui-tabs a:focus                { box-shadow: none !important; }
+.page_mifiesta .ui-tabs .ui-tabs-active a      { background: #484848 !important; color: #FFF !important; }
+
+
+#detalle_mifiesta .ui-content                     { /* background: #000000 !important; */}
+#detalle_mifiesta .contenedor-mifiesta               { max-width: 600px; margin: 0px auto; padding: 10px; white-space: nowrap; }
+#detalle_mifiesta .contenedor-mifiesta .info-mifiesta   { width: 55%; padding: 0px 5% 0px 0px; display: inline-block; vertical-align: top; white-space: normal; }
+
+#detalle_mifiesta .info-mifiesta .nombre-mifiesta       { font-family: oswald_light; font-size: 24px; font-weight: bold; color: #FFF; }
+#detalle_mifiesta .info-mifiesta .telefono-mifiesta     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detalle_mifiesta .info-mifiesta .direccion-mifiesta     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detalle_mifiesta .info-mifiesta .descrip-mifiesta      { margin: 10px 0px 0px; color: #FFF; }
+
+#detalle_mifiesta .contenedor-mifiesta .foto-fiesta-gallo   { width: 40%; height: 100%; display: inline-block; vertical-align: top; text-align: right; overflow: hidden; }
+#detalle_mifiesta .foto-mifiesta img                 { width: 100%; margin: 0px auto 14px; display: block; }
+#detalle_mifiesta .titulo-ubicacion-mifiesta         { height: 40px; background: #2E2E2E; color: #ffba00; text-align: center; line-height: 40px; }
+#detalle_mifiesta .btns_compartir            { text-align: center; }
+
+@media screen and (max-width: 500px) {
+    #detalle_mifiesta .btns_compartir .typeButton{ font-size: 12px !important; }
+}
+
+/*============================ Page Info Invitacion ============================*/
+.page_invitaciones .ui-tabs                        { padding: 0px !important; }
+.page_invitaciones .ui-tabs .ui-tabs-nav           { background: #0D0D0D; border-bottom: 1px solid #484848 !important; }
+.page_invitaciones .ui-tabs a                      { background: transparent !important; border: none !important; font-family: oswald_light; font-size: 16px !important; font-weight: normal; color: #FFF; text-shadow: none !important; }
+.page_invitaciones .ui-tabs a:hover                { background: #666 !important; color: #FFF !important; }
+.page_invitaciones .ui-tabs a:focus                { box-shadow: none !important; }
+.page_invitaciones .ui-tabs .ui-tabs-active a      { background: #484848 !important; color: #FFF !important; }
+
+
+#detalle_invitacion .ui-content                                 { /*background: #000000 !important;*/ }
+#detalle_invitacion .contenedor-invitacion                      { max-width: 600px; margin: 0px auto; padding: 10px; white-space: nowrap; }
+#detalle_invitacion .contenedor-invitacion .info-invitacion     { width: 55%; padding: 0px 5% 0px 0px; display: inline-block; vertical-align: top; white-space: normal; }
+
+#detalle_invitacion .info-invitacion .nombre-invitacion       { font-family: oswald_light; font-size: 24px; font-weight: bold; color: #FFF; }
+#detalle_invitacion .info-invitacion .by                      { font-family: oswald_light; font-size: 18px; color: #FFBA00; }
+#detalle_invitacion .info-invitacion .telefono-invitacion     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detalle_invitacion .info-invitacion .direccion-invitacion    { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detalle_invitacion .info-invitacion .descrip-invitacion      { margin: 10px 0px 0px; color: #FFF; padding-bottom: 10px;}
+#detalle_invitacion .info-invitacion                          { padding-left: 10px; padding-top: 5px;}  
+#detalle_invitacion .contenedor-mifiesta .foto-fiesta-gallo   { width: 40%; height: 100%; display: inline-block; vertical-align: top; text-align: right; overflow: hidden; }
+#detalle_invitacion .foto-invitacion img                 { width: 100%; margin: 0px auto 14px; display: block; }
+#detalle_invitacion .titulo-ubicacion-invitacion         { height: 40px; background: #2E2E2E; color: #ffba00; text-align: center; line-height: 40px; }
+#detalle_invitacion .btns_compartir            { text-align: center; }
+
+@media screen and (max-width: 500px) {
+    #detalle_invitacion .btns_compartir .typeButton{ font-size: 12px !important; }
+}
+
+
+/**********fiesta calendario********************/
+
+#detallefiesta_gallo_calendario .ui-content                     { background: #000000 !important; }
+#detallefiesta_gallo_calendario .contenedor-fiesta-gallo               { max-width: 600px; margin: 0px auto; padding: 10px; white-space: nowrap; }
+#detallefiesta_gallo_calendario .contenedor-fiesta-gallo .info-fiesta-gallo   { width: 55%; padding: 0px 5% 0px 0px; display: inline-block; vertical-align: top; white-space: normal; }
+
+#detallefiesta_gallo_calendario .info-fiesta-gallo .nombre-fiesta-gallo       { font-family: oswald_light; font-size: 24px; font-weight: bold; color: #FFF; }
+#detallefiesta_gallo_calendario .info-fiesta-gallo .telefono-fiesta-gallo     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detallefiesta_gallo_calendario .info-fiesta-gallo .direccion-fiesta-gallo     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detallefiesta_gallo_calendario .info-fiesta-gallo .descrip-fiesta-gallo      { margin: 10px 0px 0px; color: #FFF; }
+
+#detallefiesta_gallo_calendario .contenedor-fiesta-gallo .foto-fiesta-gallo   { width: 40%; height: 100%; display: inline-block; vertical-align: top; text-align: right; overflow: hidden; }
+#detallefiesta_gallo_calendario .foto-fiesta-gallo img                 { width: 100%; margin: 0px auto 14px; display: block; }
+#detallefiesta_gallo_calendario .titulo-ubicacion-fiesta-gallo         { height: 40px; background: #2E2E2E; color: #ffba00; text-align: center; line-height: 40px; }
+#detallefiesta_gallo_calendario .btns_compartir            { text-align: center; }
+
+@media screen and (max-width: 500px) {
+    #detallefiesta_gallo_calendario .btns_compartir .typeButton{ font-size: 12px !important; }
+}
+
+/*********************************************************************/
+
+
+
+/*============================ Page Mis Fiestas ============================*/
+#misfiestas #msgNuevaFiesta p                    { width: 85%; margin: 0px auto; padding: 40px 0px !important; font-family: oswald; font-size: 24px; color: #FFF; text-align: center; }
+#invitaciones #invitacionesNoDisponibles        { width: 85%; margin: 0px auto; padding: 40px 0px !important; font-family: oswald; font-size: 24px; color: #FFF; text-align: center; }
+#crearevento .content_form                      { width: 85%; max-width: 600px; margin: 0px auto !important; }
+#crearevento .content_form label                { margin: 10px 0px 0px; font-family: oswald_light; font-size: 24px; color: #FFF; }
+#crearevento .content_form .ui-input-text       { background: none !important; border: 1px solid #FFF; border-radius: 0px; }
+#crearevento .content_form .ui-input-text input { color: #FFF; }
+#crearevento .ui-select .ui-btn                 { box-shadow: none !important; }
+#crearevento .content_form .typeButton          { margin: 14px 0px; margin: 14px 0px; padding: 6px 0px; font-family: oswald_light; font-size: 24px; color: #FFF; text-align: center; display: block; }
+#msgNuevaFiesta p                                { font-family: oswald_light !important;}       
+#crearevento .titulo-ubicacion-alero            { height: 40px; background: #2E2E2E; color: #FFBA00; text-align: center; line-height: 40px; }
+
+
+/*============================ Page Aleros ============================*/
+.page_aleros .ui-listview li                    { margin-top:-1px; padding: 0px !important; background: none !important; border-top: 1px white solid !important; border-radius: 0px !important; }
+.page_aleros .content-alero                     { padding: 16px 0px 17px;  border: none !important; text-align: center !important; display: block; }
+
+.page_aleros .content-alero .descripcion        { max-width: 600px; margin: 0px auto; padding: 0px 10px; text-align: left; box-sizing: border-box; }
+.page_aleros .content-alero .descripcion .nombre{ font-family: oswald_light; font-size: 22px; font-weight: bold; color: white; text-align: center; text-transform: uppercase;}
+.page_aleros .content-alero .descripcion .lugar { font-family: oswald_light; font-size: 12px; color: white !important; text-shadow: none !important; text-align: center; text-transform: uppercase;}
+.page_aleros .title-aleros                      { font-family: oswald_light;  background-color: black; font-size: 27px; max-width: 600px; margin: 0px auto; padding: 0px 10px; box-sizing: border-box; text-align: center; color: #FFBA00;}
+.page_aleros .ui-listview li a.ui-btn-active     { background-color: red !important; }
+
+.page_aleros .ui-listview li a.ui-btn:hover, 
+.page_aleros .ui-listview li a.ui-btn-active       { background: url('../img/aleros/hover_aleros2.png') !important; color: white; }
+
+
+/*============================ Page Info Alero ============================*/
+#detallealero .ui-content                     { width: 100% !important; /*background: #000000 !important;*/ }
+#detallealero .contenedor-alero               { max-width: 600px; margin: 0px auto; padding: 10px; white-space: nowrap; }
+#detallealero .contenedor-alero .info-alero   { width: 55%; padding: 0px 5% 0px 0px; display: inline-block; vertical-align: top; white-space: normal; }
+
+#detallealero .info-alero .nombre-alero       { font-family: oswald_light; font-size: 24px; font-weight: bold; color: #FFF; text-transform: uppercase;}
+#detallealero .info-alero .telefono-alero     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detallealero .info-alero .direccion-alero     { font-family: oswald_light; font-size: 16px; color: #FFF; }
+#detallealero .info-alero .descrip-alero      { margin: 10px 0px 0px; color: #FFF; }
+#detallealero .showhidePromos                   { margin: 8px 0px 0px; text-align: center; display: inline-block; }
+
+#detallealero .contenedor-alero .foto-alero   { width: 40%; height: 100%; display: inline-block; vertical-align: top; text-align: right; overflow: hidden; }
+#detallealero .foto-alero img                 { width: 100%; margin: 0px auto 14px; display: block; }
+#detallealero .titulo-ubicacion-alero         { height: 40px; background: #2E2E2E; color: #ffba00; text-align: center; line-height: 40px; }
+
+#detallealero .content_prmos                    { width: 80%; margin: 0px auto; }
+#detallealero .content_prmos .bx-prev           { left: -10px !important; }
+#detallealero .content_prmos .bx-next           { right: -10px !important; }
+#detallealero .content_prmos a:before           { color: #FFF !important; }
+
+
+/*============================ Menu Slide ============================*/
+
+.menu_slide                                     { background: url('../img/menu_slide/bg_menu.png') repeat-y top right #252525 !important; height: auto; border-right: none !important; } 
+
+
+.menu_slide .ui-panel-inner                     { padding: 0px !important; }
+
+.menu_slide .head_menuslide                     { height: 84px; padding: 0px !important; /*background: url('../img/menu_slide/shadow_headmenu.png') repeat-y top right #b40513 !important;*/  line-height: 84px } 
+
+.menu_slide a span                              {font-family: oswald_light; font-size: 18px;}
+.menu_slide .head_menuslide span                { padding: 0px 0px 0px 28px; font-family: oswald_light; font-size: 34px; font-weight: normal !important; color: #EFEFEF !important; text-shadow: initial !important; }
+.menu_slide a.ui-btn:hover,
+.menu_slide a.ui-btn-active                     { background: url('../img/menu_slide/trans.png')!important; /*background-color: #181818 !important;*/ box-shadow: none !important; color: #FFF !important; }
+.menu_slide .ui-btn                             { border: none !important; color: #818181 !important;  }
+.head_menuslide.container-logo.ui-li-divider.ui-bar-a.ui-bar-inherit.ui-first-child {background:url('../img/yellow.png') !important;} 
+
+/*============================ Page Calendario ============================*/
+.banner-calendario                              { background: url('../img/banner_calendario.jpg') top center /cover !important; text-align: center; height: 160px; padding: 0px !important; }
+.banner-calendario div                          { line-height: normal; display: inline-block; }
+.banner-calendario .div-cell                    { vertical-align: middle; display: inline-block; }
+.banner-calendario .cell-01                     { width: 1px; height: 120%; vertical-align: middle; display: inline-block; }
+.banner-calendario .dia-calendario              { font-family: oswald_light; font-size: 34px; font-weight: normal; color: #FFF; display: block; line-height: 36px; }
+.banner-calendario .fehca-calendario            { font-family: oswald_light; font-size: 68px; font-weight: normal; color: #FFF; display: block; line-height: 70px; }
+
+.content-calendario .ui-input-text              { background: transparent !important; border: none !important; box-shadow: none !important; color: initial !important; }
+
+.page_calendario .wrapper-center                { max-width: 700px; margin: 0px auto; }
+.page_calendario .ui-panel-wrapper              { background: #0D0D0D !important; }
+.page_calendario .hasDatepicker                 { max-width: 100% !important; }
+.page_calendario .ui-datepicker-header          { padding: 0px !important; background: #242424; line-height: 52px; }
+
+.page_calendario .ui-datepicker-prev            { left: 26px !important; }
+.page_calendario .ui-datepicker-next            { right: 26px !important; }
+.page_calendario .ui-datepicker-prev:hover,
+.page_calendario .ui-datepicker-next:hover      { color: #FFF; text-shadow: none !important; }
+.page_calendario .ui-datepicker-prev,
+.page_calendario .ui-datepicker-next            { width: auto !important; margin: 0px !important; border: none !important; font-family: FontAwesome; font-size: 30px; color: #FFF; text-indent: initial !important; top: 0px !important; }
+.page_calendario .ui-datepicker-prev span,
+.page_calendario .ui-datepicker-next span       { display: none; }
+.page_calendario .ui-datepicker-prev:before     { content: "\f104"; }
+.page_calendario .ui-datepicker-next:before     { content: "\f105"; }
+.page_calendario .ui-datepicker-prev:after,
+.page_calendario .ui-datepicker-next:after      { background-image: none !important; background-color: transparent !important; }
+
+.page_calendario .ui-datepicker-title           { height: 52px !important; line-height: 52px !important; }
+.page_calendario .ui-datepicker-title span      { font-family: oswald_light; font-size: 26px; font-weight: normal; color: #FFF !important; text-shadow: none !important; }
+.page_calendario .hasDatepicker th,
+.page_calendario .hasDatepicker td              { border: none; }
+.page_calendario .hasDatepicker th *,
+.page_calendario .hasDatepicker td *            { font-family: oswald_light; font-size: 18px; font-weight: normal; color: #FFF !important; text-shadow: none !important; }
+.page_calendario .hasDatepicker td a            { width: 48px; height: 48px; margin: 0px auto; padding: 0px; border-radius: 100px; line-height: 48px; text-align: center; box-sizing: border-box; }
+
+.tipos-actividades                              { margin: 10px auto !important; text-align: justify; -moz-text-align-last: justify; -webkit-text-align-last: justify; text-align-last: justify; }
+.tipos-actividades li.inline                    { text-align: center; margin: 0px 10px !important; }
+.tipos-actividades .icon-actividad              { width: 20px; height: 20px; margin: 0px 5px 0px 0px; border-radius: 100px; vertical-align: middle; box-sizing: border-box; display: inline-block; vertical-align: middle; }
+.tipos-actividades .desc-actividad              { font-size: 17px; font-weight: normal; color: #FFF; display: inline-block; vertical-align: middle; }
+
+.page_calendario .tipo-hoy                      { border: 3px solid #FFF; line-height: 42px !important; }
+.page_calendario .tipo-evento                   { background: #F7B60C; }
+.page_calendario .tipo-concierto                { background: #E61727; }
+
+@media screen and (min-width: 701px) {
+    .page_calendario .content-search            { margin: 12px 0px !important }
+}
+
+@media screen and (max-width: 319px) {
+    .page_calendario .ui-datepicker-title span      { font-size: 18px !important; }
+    .page_calendario .hasDatepicker td              { min-width: 1px !important; }
+    .page_calendario .hasDatepicker th *,
+    .page_calendario .hasDatepicker td *            { font-size: 14px; }
+    .page_calendario .hasDatepicker td a            { width: 34px !important; height: 34px !important; line-height: 34px; }
+    
+    .tipos-actividades li.inline                    { margin: 0px 7px !important; }
+    .tipos-actividades .icon-actividad              { width: 15px; height: 15px; }
+    .tipos-actividades .desc-actividad              { font-size: 13px; }
+    
+    .page_calendario .tipo-hoy                      { border: 2px solid #FFF; line-height: 30px !important; }
+}
+
+@media screen and (max-height: 320px) {
+    .banner-calendario                              { height: 100px; }
+    .banner-calendario .dia-calendario              { font-size: 24px; display: block; line-height: 24px; }
+    .banner-calendario .fehca-calendario            { font-size: 48px; display: block; line-height: 50px; }
+}
+
+
+/*============================ Slider ============================*/
+.bx-viewport                                    { padding: 20px 0px 26px;  }
+.slide-horizontal                               { margin: 0px; }
+.slide-horizontal li                            { left: 0px; }
+.slide-horizontal li img                        { width: 90%; margin: 0px auto; display: block; }
+
+.bx-pager                                       { width: 100%; margin: 4px 0px 0px; font-size: 0px; text-align: center; position: absolute; z-index: 100000; }
+.bx-pager .bx-pager-item                        { padding: 0px 5px; display: inline-block; /* IE 6-7 */*display: inline; *zoom: 1; }
+.bx-pager .bx-pager-item a                      { text-decoration: none !important; font-size: 1px; color: transparent !important; text-indent: -999999px; }
+.bx-pager .bx-pager-item a:before               { content: "\f10c"; font-family: FontAwesome; font-size: 16px; color: #2E2E2E; }
+.bx-pager .bx-pager-item a.active:before        { content: "\f111"; font-family: FontAwesome; font-size: 16px; color: #2E2E2E; }
+
+.bx-wrapper                                     { position: relative; margin: 0px 0px 26px; }
+.bx-wrapper .bx-prev:before                     { content: "\f104"; font-family: FontAwesome; font-size: 70px; font-weight: lighter; color: #2E2E2E; line-height: 54px; text-align: left; }
+.bx-wrapper .bx-prev:hover                      { color: transparent; }
+.bx-wrapper .bx-prev                            { width: 31px; height: 57px; margin: -35px 0px 0px; font-size: 1px; color: transparent; position: absolute; text-indent: -999999px; left: 15px; top: 50%; z-index: 100000; }
+.bx-wrapper .bx-next:before                     { content: "\f105"; font-family: FontAwesome; font-size: 70px; font-weight: lighter; color: #2E2E2E; line-height: 54px; text-align: right; }
+.bx-wrapper .bx-next:hover                      { color: transparent; }
+.bx-wrapper .bx-next                            { width: 24px; height: 57px; margin: -35px 0px 0px; font-size: 1px; color: transparent; position: absolute; text-indent: -999999px; position: absolute; right: 15px; top: 50%; z-index: 100000; }
+
+
+/*============================ Iconos ============================*/
+.icon-font                                      { margin: 0px 5px; font-family: FontAwesome; font-style: normal; }
+.icon-search:before                             { content: '\f002'; }
+.loader                                         { background:url(../img/loadingMap.gif) no-repeat center center; width: 100%; height: 100%;}
+
+
+
+/*============================= LOADER ============================*/
+.loader-panel {  background:url(../img/loadingBackground.gif)center center no-repeat; width: 100%; height: 100%;
+         
+                 max-height: 800px;
+}
+.ui-loader    { top: 0% !important; left: 0% !important;}
+.ui-loader-verbose {width: 100% !important; height: 100% !important; margin-left: 0px !important; margin-top: 0px !important; padding: 0px !important;}
+
+  /*============================  EVENTO ===============================*/
+
+.detalle_evento { margin: 0 auto; text-align: center; color:#ffba00; height: auto; width: 100%; line-height: 45px;  font-size: 33px;}
+.contenedor-fiesta-gallo .foto-fiesta-gallo img {width: 100%!important; height: auto; min-height: 40px; background:url(../img/loadingMap.gif)center center no-repeat;}
+.event_lis {  color: #fff; font-size: 20px; width: 100%; margin: 0 auto; height:auto; border-bottom: 1px solid white; height:auto; border-top: 1px solid white; border-radius: 0px !important; margin: -1px !important;}
+.event_lis img {margin: 5px 15px 0px 5px; background: transparent !important;}
+
+.event_lis_ {  color: #fff; font-size: 20px; width: 100%; margin: 0 auto; height:auto; border-bottom: 1px solid white; height:auto; border-top: 1px solid white; border-radius: 0px !important; margin: -1px !important;}
+.event_lis_ img {margin: 5px 15px 0px 5px; background: transparent !important;}
+
+  .ui-btn-icon-left:after {display: none!important;}
+  .ui-collapsible-heading-toggle.ui-btn.ui-btn-icon-left.ui-btn-inherit.ui-icon-minus,
+  .ui-collapsible-heading-toggle.ui-btn.ui-btn-icon-left.ui-btn-inherit.ui-icon-minus.ui-btn-active,
+  .ui-collapsible-heading-toggle.ui-btn.ui-icon-plus.ui-btn-icon-left.ui-btn-inherit { border-radius: none!important; padding:0px!important; background: none!important; border: none!important; color: #fff!important; font-size: 20px!important;font-weight: normal!important; line-height: 35px!important; }
+  .ui-collapsible-content.ui-body-inherit {border:none!important; background: none!important;}
+  .ui-page-theme-a .ui-btn:focus, html .ui-bar-a .ui-btn:focus, html .ui-body-a .ui-btn:focus, html body .ui-group-theme-a .ui-btn:focus, html head + body .ui-btn.ui-btn-a:focus, .ui-page-theme-a .ui-focus, html .ui-bar-a .ui-focus, html .ui-body-a .ui-focus, html body .ui-group-theme-a .ui-focus, html head + body .ui-btn-a.ui-focus, html head + body .ui-body-a.ui-focus {box-shadow: none!important;}
+  .infCenter{ font-family:oswald_light;  width:100%; width: 180px; margin: 0 auto; font-weight: }
+  .infCenter span {top: 15%; position: absolute;}
+  /*.asistire { color: green;}*/
+  .noAsistire { color:white;}
+  .detalle_evento { background-color: black !important;}
+  .ui-collapsible-content {padding: 10px 0px 10px 0px !important;}
+  .centrar-detalle {
+    text-align:center;
+  }
+
+  .descrip-fiesta-gallo
+  {
+    text-align: justify !important;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+  }
+
+  .descrip-invitacion
+  {
+    text-align: justify !important;
+    padding-right: 5px;
+    padding-bottom: 5px;
+  }
+
+  .check  {
+    float: right !important;
+    margin-right: -40px !important;
+  }
+
+  [data-role="popup"] {
+    position: relative; // the parent container probably needs a position context also.
+    height: 90%; //just not to block the full screen - it is a popup :)
+    overflow-y: scroll;
+ }
+
+  /* ========== SHARE MESSAGE ============== */
+
+#shareMessage   { padding: 15px !important; background-color: black; }
+#shareMessage p { text-align: center; font-size: 18px; font-family: oswald_light; color: white;}
+#shareMessage textarea, #shareMessage button {font-family: oswald_light !important;}
+#shareMessage textarea { border: 2px solid #FFBA00; padding-top: 10px;}
+
+#invitadosOnApp {background-color: black; color: white; border: 2px solid white;}
+#p-customMessageAPP {bottom:0px;   width: 100%;  padding:10px; color: red;}
+
+#confAsistencia a {text-decoration:none;}
+
+.invitacionesContainer li a div.parent {float: left; padding: 0 5px;}
+.eventosUsuarioContainer li a div.parentEventosUsuario {float: left; padding: 0 5px;}
+.eventosGalloContainer li a div.parentEventosGallo {float: left; padding: 0 5px;}
+
+
+
+  

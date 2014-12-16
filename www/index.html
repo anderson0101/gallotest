@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<!--
+    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, 
+
+        height=device-height" />
+        <link rel="stylesheet"s type="text/css" href="css/index.css" />
+        <link rel="stylesheet"s type="text/css" href="css/panel.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.4.3.min.css" />
+        <link rel="stylesheet" type="text/css" href="js/datepicker/jquery.mobile.datepicker.css" />
+        <title>App Gallo</title>
+        <style>
+            body .page-container{ /*background: url('img/bg_app.png') no-repeat;*/ -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover; }
+            
+        </style>
+    </head>
+
+    <body data-overlay-theme="b" data-transition="slide">
+        <!-- MAIN PANEL -->
+        <div data-role="panel" id="mainpanel" class="menu_slide" data-theme="a" data-display="push">
+            
+            <div data-role="popup" id="shareMessage" class="ui-content" data-theme="a">
+                <!--<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>-->
+                <p>Comparte en tu muro</p>
+                <textarea id="textMessage"></textarea>
+                <a class="typeButton buttonYellow" id="btn-share"  onclick="misFuncionesFB.share();" >Publicar</a>
+               <!-- <input type="button" id="btn-share"  onclick="misFuncionesFB.share();" value="Publicar">
+                <input type="button" class="buttonRed" id="btn-cancel" onclick="misFuncionesFB.closeShare();" value="Cancelar">-->
+                <a class="typeButton buttonYellow" id="btn-cancel" onclick="misFuncionesFB.closeShare();" >Cancelar</a>
+
+                <p id="p-customMessageShare"></p>
+            </div>
+
+
+            <div data-role="popup" id="positionWindow" class="ui-content" data-theme="a">
+                <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                <p>Listado de amigos ...</p>
+                <ul id="lista-amigos" data-role="listview">
+                </ul>
+                <a class="typeButton buttonYellow" onclick="misFuncionesFB.sendInvitations();" >Invitar</a>
+                <p id="p-customMessageFB"></p>
+            </div>
+
+
+            <div data-role="popup" id="invitadosOnApp" class="ui-content" data-theme="a">
+               <!-- <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>-->
+                <div style="height:30px; width:100%; text-align:center; overflow:hidden; padding:5px;">
+                    Listado de amigos <br>
+                </div>
+                <div class="parentlist">         
+                    <div class="divlist">
+                        <ul style="margin-top:30px width:90%; margin:auto;" id="lista-amigos-onapp"  data-role="listview">
+                        </ul>
+                    </div>
+                </div>
+                  <div style="margin-left:auto; width:100%; text-align:center;">
+                    <p style="text-align:center;" id="p-customMessageAPP"></p>
+                </div>
+                <div style="margin-left: auto; margin-right: auto; width: 55%; text-align:center; display:block; padding-top: 10px; padding-bottom:10px;">
+                    <a style="width: 60px; float:left " class="typeButton buttonYellow" onclick="CApp.sendInvitationsOnApp();">Invitar</a>
+                    <a style="width: 70px; float:left;" class="typeButton buttonYellow" id="btn-cancel" onclick="invitacionesApp.closeShare();" >Cancelar</a>
+                </div>
+
+            </div>
+
+                <ul class="main-menu" data-role="listview" data-inset="false" data-icon="false">
+                    <li data-role="list-divider" class="head_menuslide container-logo ui-li-divider ui-bar-a ui-first-child">
+                        
+                        <span id="bienvenido">Bienvenido</span>
+
+                    </li>
+                    <li>
+                        <a href="#home" class="ui-btn">
+                            <!--<span>MENU PRINCIPAL</span>-->
+                            <i class="icon-inicio"></i><span>INICIO</span> 
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#quesigalafiesta" class="ui-btn" onclick="app.getEventosGalloDB();">
+                            <!--<i class="icon-quesigafiesta"></i><span>QUE SIGA LA FIESTA</span>-->
+                            <i class="icon-quesigafiesta"></i><span>QUE SIGA LA FIESTA</span>  
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#aleros" class="ui-btn" onclick="app.showLoading('show'); app.getAlerosDB();">
+                            <i class="icon-aleros"></i><span>ALEROS</span>
+                        </a>
+                    </li>
+                    <li class="ui-last-child">
+                        <a href="#calendario" class="ui-btn" onclick="app.getFechasDB();">
+                            <i class="icon-calendario"></i><span>CALENDARIO</span>
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="siguenos">
+                    <h2>SIGUENOS</h2>
+                    <ul>
+                        <li><a href="#" onclick="window.open('https://www.facebook.com/cervezagallogt', '_system');"><img src="img/redes/facebook.png"></a></li>
+                        <li><a href="#" onclick="window.open('https://twitter.com/Cerveza_Gallo', '_system');"><img src="img/redes/twitter.png"></a></li>
+                        <li><a href="#" onclick="window.open('https://www.youtube.com/user/CervezaGalloOficial', '_system');"><img src="img/redes/youtube.png"></a></li>
+                        <li><a href="#" onclick="window.open('http://instagram.com/cerveza_gallo', '_system');"><img src="img/redes/instagram.png"></a></li>
+                        <li><a href="#" onclick="window.open('http://www.pinterest.com/cervezagallo/', '_system');"><img src="img/redes/pinteres.png"></a></li>
+                    </ul>
+                </div>
+
+        </div>
+
+        <!-- HOME -->
+        <div data-role="page" class="page-container page_home" id="home" data-url="home" tabindex="0">
+
+            <!-- <button onclick="getAleros()">Obtener aleros</button> -->
+            <!-- <button onclick="updateAlero()">update alero</button> -->
+            <!-- <button onclick="getMenu()">get menu</button> -->
+
+            <div class="header-main" data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+                <img id = "imagen-banner" width="100%">
+            </div><!-- /header -->
+            
+            <div data-role="main" class="ui-content">
+                <ul class="main-menu" data-role="listview" data-inset="false" data-icon="false">
+                    <li>
+                        <a href="#quesigalafiesta" class="ui-btn estado-active" onclick="app.getEventosGalloDB();">
+                            <i class="icon-quesigafiesta"></i><span class="text-menu">QUE SIGA LA FIESTA</span>
+                        </a>
+                    </li>
+                    <hr>   
+                    <li class="list-separador">
+                        <div class="item-separador"><hr></div>
+                    </li>
+                    <li>
+                        <a href="#aleros" class="ui-btn estado-active" onclick="app.showLoading('show'); app.getAlerosDB();">
+                            <i class="icon-aleros"></i><span class="text-menu">ALEROS</span>
+                        </a>
+                    </li>
+                    <hr> 
+                    <li class="list-separador">
+                        <div class="item-separador"></div>
+                    </li>
+                    <li class="ui-last-child">
+                         <a href="#calendario" class="ui-btn estado-active" onclick="app.getFechasDB();">
+                            <i class="icon-calendario"></i><span class="text-menu">CALENDARIO</span>
+                        </a>
+                    </li>
+                    <hr>
+                </ul>
+            </div><!-- /content -->
+
+            <div data-role="footer" class="footer-page" data-position="fixed">
+                <div class="container-footer">
+   
+                    <a  class="typeButton shareIcon" data-transition="pop" onclick="window.plugins.socialsharing.share('¡No te pierdas de las mejores fiestas, promociones y eventos que solo Cerveza Gallo, la mejor cerveza, trae para ti! ', null, null, linkSO)"><img src="img/share.png"></a>                    
+
+<!--                    <a href="#dialog" class="typeButton shareIcon" data-transition="pop" onclick="window.plugins.socialsharing.share('Descargate la nueva app!', null, null, 'http://websiteguatemala.com/tpp/TERMINOS_MOVIL_GALLO/icon_gallo_1024x1024.png', 'https://play.google.com/store/apps/details?id=hr.apps.n67689031&hl=es_419')"><img src="img/share.png"></a>-->
+                    
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+                </div>
+            </div>
+        </div>
+
+        <!--### VISTA CONECTAR USUARIO  -->
+        <div data-role="page" class="page-container page_conectarusuario" id="view-conectarusuario" data-theme="a" data-url="view-conectarusuario" tabindex="0">
+
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div>
+            <!-- /header -->
+
+            <div data-role="main" class="ui-content">
+                <h1 class="titulo_page">Bienvenido</h1>
+                
+                <div id="botones-conexion" class="ui-content">
+                    <ul class="list_buttons navbar"></ul>
+
+                    <a href="#popupCloseRightRedes" id="showLoginErrorRedes" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" style="display:none;">Right close button</a>
+                    <div data-role="popup" id="popupCloseRightRedes" class="ui-content" style="max-width:280px">
+                        <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                    <p>Ha ocurrido un error. Por favor intente de nuevo.</p>
+                    </div>
+                </div>
+
+            </div>
+            <!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- QUE SIGA LA FIESTA -->
+        <div data-role="page" class="page-container page_homefista" id="quesigalafiesta" data-theme="a" data-url="quesigalafiesta" tabindex="0">
+
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+                <div data-role="tabs" class="tabs menu_fiesta_gallo">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#fiestasgallo" class="fiestasgallo" data-ajax="false">Fiestas Gallo</a></li>
+                            <li><a href="#misfiestas" class="misfiestas" data-ajax="false">Mis fiestas</a></li>
+                            <li><a href="#invitaciones" class="invitaciones" data-ajax="false">Invitaciones</a></li>
+                        </ul>
+                    </div>
+
+                    <div id="fiestasgallo">
+                        <form>
+                            <div class="content-search">
+                                <input id="searchfiestasgallolist" type="text" name="search-actividad" placeholder="Buscar fiestas..." />
+                                <input type="button" value="&nbsp;">
+                            </div>
+                        </form>
+                        <ul id="fiestasgallolist" data-role="listview" data-inset="true" class="eventosGalloContainer">
+                        </ul>
+                    </div>
+
+                    <div class="ui-content" id="misfiestas">
+                        <!--- RELLENAR SI HAY USUARIO LOGUEADO-->
+                        <div id="formNuevaFiesta" class="ui-content" style="display:none;">
+                            <form>
+                                <div class="content-search">
+                                    <input id="searchmisfistaslist" type="text" name="search-actividad" placeholder="Buscar fiestas..." />
+                                    <input type="button" value="&nbsp;">
+                                </div>
+
+                                <div class="content-add-event">
+                                    <a href="#crearevento" class="ui-shadow-icon ui-btn ui-shadow ui-corner-all ui-btn-b ui-icon-plus ui-btn-icon-right" onclick="app.showCreateEventUser();">Tus eventos</a>
+                                </div>
+                            </form>
+                            <ul id="misfistaslist" data-role="listview" data-inset="true" class="eventosUsuarioContainer">
+                            </ul>
+                        </div>
+
+                        <div id="msgNuevaFiesta" style="display:none;" >
+                            <p>Inicia sesi&oacute;n para ver tus fiestas</p>  
+                        </div>
+                        <div id="botones_conexion_misfiestas" class="ui-content">
+
+                            <ul class="list_buttons navbar">
+                            <!--    
+                                <li>
+                                    <a class="btn_crearperfil btn_facebook" href="#" onclick="misFuncionesFB.login()" style=" border: 1px solid #3664A2 !important;">
+                                        <span id="fb-text-login" ></span>
+                                        <i class="icon-btn icon-facebook"></i>
+                                    </a>
+                                </li>
+                            -->
+                            </ul>
+                        </div>
+                    </div>
+
+                     <div class="ui-content" id="invitaciones">
+                        
+                        <div id="invCont">
+                        <form>
+                            <div class="content-search">
+                                <input id="searchinvitacioneslist" type="text" name="search-actividad" placeholder="Buscar invitaciones..." />
+                                <input type="button" value="&nbsp;">
+                            </div>
+                        </form>
+                        <ul id="invitacioneslist" data-role="listview" data-inset="true" class="invitacionesContainer">
+                        </ul>
+                        </div> 
+
+                        <div id="invitacionesNoDisponibles" class="ui-content" style="display:none;" >
+                            <p>Inicia sesi&oacute;n para ver tus invitaciones.</p>
+                        </div>
+
+                        <div id="botones_conexion_invitaciones" class="ui-content">
+                            <ul class="list_buttons navbar">
+                            <!--   
+                                <li>
+                                    <a class="btn_crearperfil btn_facebook" href="#" onclick="misFuncionesFB.login()" style=" border: 1px solid #3664A2 !important;">
+                                        <span id="fb-text-login" ></span>
+                                        <i class="icon-btn icon-facebook"></i>
+                                    </a>
+                                </li>
+                            -->
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- INICIO: Crear mi evento. Estuardo -->
+        <div data-role="page" class="" id="crearevento" data-theme="b" data-url="crearevento" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+                <div class="content_form">
+                    <!--Nombre del evento-->
+                    <label for="name-event">Nombre de la fiesta</label>
+                    <input name="name-event" id="name-event" value="" type="text">
+
+                    <!--Fecha del evento -->
+                    <label for="date-event">Fecha</label>
+                    <input id="date" type="date" name="date" value="">
+
+
+                    <!--Hora del evento -->
+                    <label>Hora</label>
+                    <input id="hora-evento" type="time" name="hora-evento" />
+                    <!--<select name="hours-event" id="hours-event" data-mini="true" data-inline="true">
+                        <option value="01">01</option>
+                        <option value="02">02</option>
+                        <option value="03">03</option>
+                        <option value="04">04</option>
+                        <option value="05">05</option>
+                        <option value="06">06</option>
+                        <option value="07">07</option>
+                        <option value="08">08</option>
+                        <option value="09">09</option>
+                        <option value="10">10</option>
+                        <option value="11">11</option>
+                        <option value="12">12</option>
+                    </select>
+                    <span>:</span>
+                    <select name="minutes-event" id="minutes-event" data-mini="true" data-inline="true">
+                        <option value="00">00</option>
+                        <option value="05">05</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                        <option value="20">20</option>
+                        <option value="25">25</option>
+                        <option value="30">30</option>
+                        <option value="35">35</option>
+                        <option value="40">40</option>
+                        <option value="45">45</option>
+                        <option value="50">50</option>
+                        <option value="55">55</option>
+                    </select>
+                    <span>:</span>
+                    <select name="timezone-event" id="timezone-event" data-mini="true" data-inline="true">
+                        <option value="AM">AM</option>
+                        <option value="PM">PM</option>
+                    </select>-->
+
+                    <!--Descripción del evento -->
+                    <label for="description-event">Descripción</label>
+                    <textarea cols="40" rows="8" name="description-event" id="description-event"></textarea>
+
+                    <!--Lugar del evento -->
+                    <h2 style="text-align: center;">Lugar del evento</h2>
+
+                    <!-- Departamento -->
+                    <label for="departamento-user-event" class="select">Departamento</label>
+                    <select name="departamento-user-event" id="departamento-user-event" data-theme="b" data-overlay-theme="b" data-content-theme="b" onchange="app.getMunicipioDB(this.value);">
+                        <option value="dinamico">Seleccione...</option>
+                    </select>
+
+                    <!--Municipio -->
+                    <label for="municipio-user-event" class="select">Municipio</label>
+                    <select name="municipio-user-event" id="municipio-user-event" data-theme="b" data-overlay-theme="b">
+                        <option value="dinamico">Seleccione...</option>
+                    </select>
+
+                    <!--Dirección-->
+                    <label for="address-event">Dirección</label>
+                    <input name="address-event" id="address-event" value="" type="text">
+
+                    <!--Latitud-->
+                    <label for="latitude-event" >Latitud</label>
+                    <input name="latitude-event" id="latitude-event" value="" type="text" readonly>
+
+                    <!--Longitud-->
+                    <label for="longitude-event">Longitud</label>
+                    <input name="longitude-event" id="longitude-event" value="" type="text" readonly>
+
+                    <!-- boton guardar -->
+                    <a class="typeButton buttonYellow" id="btn-guardarMiEvento" userId = "" onclick="app.validateUserBlock()" >Guardar evento</a>
+                </div>
+                
+                <!-- Mapa -->
+                <div class="titulo-ubicacion-alero">UBICACI&Oacute;N</div>
+                <div id="map-event-canvas"></div> 
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+        <!-- FIN: Crear mi evento. Estuardo -->
+
+        <!-- DETALLE FIESTAS GALLO -->  <!--Que hace esto aqui?????? Preguntar -->
+        <!--<div data-role="page" class="page-container" id="detallealero" data-theme="a" data-url="detallealero" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+            <!--<div data-role="content" class="ui-content">
+                <div class="contenedor-alero">
+                    <div class="info-alero">                        
+                    </div>
+                    <div class="foto-alero"></div>
+                </div>
+
+                <div class="titulo-ubicacion-alero">UBICACI&Oacute;N</div>
+
+                <div id="map-canvas"></div>                
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                </div>
+            </div>
+        </div>-->
+
+        <!-- ALEROS -->
+        <div data-role="page" class="page-container page_aleros bg_pageBlack" id="aleros" data-theme="a" data-url="aleros" tabindex="0">
+
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>                
+                <div class="title-aleros">
+                ALEROS
+                </div>
+                <div class="banner">
+                    <img src="img/aleros/banner.png">
+
+                    <!--<img id="banner-d" src=""/>-->
+                </div>
+            </div><!-- /header -->
+            
+            <div data-role="main" class="ui-content">
+                <form>
+                    <div class="content-search">
+                        <input id="searchaleroslist" type="text" name="search-actividad" placeholder="Buscar invitaciones..." />
+                        <input type="button" value="&nbsp;">
+                    </div>
+                </form>
+                <input type="hidden" value="" id="idalero">
+                <ul id="aleroslist" data-role="listview" data-inset="true" class="alerosContainer">
+                </ul>
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- DETALLE ALERO -->
+        <div data-role="page" class="page-container page_infoalero" id="detallealero" data-theme="a" data-url="detallealero" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png" />
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+                <div class="contenedor-alero">
+                    <!-- Titulo del alero -->
+                    <div class="info-alero"></div>                   
+
+                    <!-- Foto del alero -->
+                    <div class="foto-alero"></div>
+                </div>
+                <div class="content_prmos">
+                    <ul class="slide-horizontal clearfix"></ul>
+                </div>
+
+                <div class="titulo-ubicacion-alero">UBICACI&Oacute;N</div>
+
+                <div id="map-canvas" class="map-canvas"></div>                
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- CALENDARIO -->
+        <div data-role="page" class="page-container page_calendario" id="calendario" data-theme="a" data-url="calendario" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+                <div class="banner-calendario">
+                    <div class="div-cell">
+                        <span class="dia-calendario">Viernes</span><!--Agregar la fecha del día actual con program, esto es ej.-->
+                        <span class="fehca-calendario">13</span>
+                    </div>
+                    <div class="div-cell cell-01"></div>
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+                <div class="wrapper-center">
+                    <!--<div class="content-search">
+                        <input type="text" name="search-actividad" placeholder="Buscar evento" />
+                        <input type="submit" value="&nbsp;">
+                    </div>-->
+                    <div class="content-calendario">
+                         <div class="calendar" data-color="normal">
+                            <input type="text" name="date-calendar" data-inline="true" style="display:none">
+                         </div>
+
+                    </div>
+
+                    <ul class="tipos-actividades navbar">
+                        <li class="inline">
+                            <div class="icon-actividad tipo-hoy"></div>
+                            <div class="desc-actividad">Hoy</div>
+                        </li>
+                        <li class="inline">
+                            <div class="icon-actividad tipo-evento"></div>
+                            <div class="desc-actividad">Mios</div>
+                        </li>
+                        <li class="inline">
+                            <div class="icon-actividad tipo-concierto"></div>
+                            <div class="desc-actividad">Eventos Gallo</div>
+                        </li>
+                    </ul>
+                </div>
+            </div><!-- /content -->
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+        <div data-role="page" id="loading" class="ui-page-theme-b">
+            <div data-role="header">
+                <h1>...</h1>
+            </div>
+            <div data-role="content">
+
+                <span>Loading...</span>
+            </div>            
+        </div>
+
+
+        <!-- ### DETALLE FIESTA GALLO -->
+        <div data-role="page" class="page-container page_fiesta_gallo bg_pageBlack" id="detallefiesta_gallo" data-theme="a" data-url="detallefiesta_gallo" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+              <div data-role="main" class="ui-content">
+
+                <div  class="detalle_evento">
+                    EVENTO
+                </div>
+
+                <div class="contenedor-fiesta-gallo">
+
+                     <!-- Foto del alero -->
+                    <div class="foto-fiesta-gallo">
+                        <img class = "img-fiesta-gallo" src="foto">
+                    </div>
+
+                    <!-- Titulo del alero -->
+                    <div class="info-fiesta-gallo">
+                        <div class="event_lis_ accordion firstEvent">
+                                     <h4>
+                                        <div class="infCenter"><img src="img/icon-eventosDetalle.png" ><span>VER DETALLES</span></div>
+                                     </h4> 
+                                    <div id="eveGalloDetalle" class="centrar-detalle"> </div>
+                        </div> 
+
+                        <div class="event_lis accordion">
+                                    <h4><div class="infCenter"><img src="img/icon_eventos1.png" ><span>COMPARTIR</span></div></h4> 
+                                    
+                                    <div id="fbTwCompartir" class="centrar-detalle"> </div>
+                        </div>
+                     
+                         <div class="event_lis accordion">
+                                    <h4><div class="infCenter"><img src="img/icon_eventos2.png" ><span>INVITAR</span></div></h4> 
+                                    <div id="invFiestaBotones" class="centrar-detalle"></div>
+                        </div>
+                        
+                        <div id="confAsistencia"></div>
+                        <!--
+                        <div  class="event_lis"  style="position: relative;">
+                             <div class="infCenter"><img src="img/icon_eventos4.png" ><span>TODO TICKET</span></div>
+                        </div>-->
+                       
+                        <div   class="event_lis_">
+                                    <h4><div class="infCenter" style="position:relative;">
+                                            <img src="img/ubicacion.png" >
+                                            <span  style="top:20%;" >UBICACIÓN</span>
+                                        </div>
+                                    </h4>  
+                        </div>
+                        
+                            <div id="map-canvas-fiesta-gallo" class="map-canvas" style="display: block; !important" aria-hidden="false"></div>
+                                                   
+                    </div>                   
+
+                   
+                </div>
+
+
+
+            <!-- <div data-role="main" class="ui-content">
+
+                <div data-role="tabs" id="tabs" class="menu_fiesta-gallo">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#fiestasgallo" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .fiestasgallo').click()">Fiestas Gallo</a></li>
+
+                            <li><a href="#misfiestas" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .misfiestas').click()">Mis fiestas</a></li>
+
+                            <li><a href="#invitaciones" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .invitaciones').click()">Invitaciones</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contenedor-fiesta-gallo">
+                    <!-- Titulo del alero -->
+               <!--     <div class="info-fiesta-gallo">                       
+                    </div>                   
+
+                    <!-- Foto del alero -->
+               <!--     <div class="foto-fiesta-gallo"></div>
+                </div>
+
+                <div id="boton-redes">
+                </div>
+
+                <div class="titulo-ubicacion-fiesta-gallo">UBICACI&Oacute;N</div>
+
+                <div id="map-canvas-fiesta-gallo" class="map-canvas"></div>                
+            </div>-->
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+            <!-- ### DETALLE FIESTA GALLO CALENDARIO-->
+        <div data-role="page" class="page-container page_fiesta_gallo bg_pageBlack" id="detallefiesta_gallo_calendario" data-theme="a" data-url="detallefiesta_gallo_calendario" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+
+             
+                <div class="contenedor-fiesta-gallo">
+                    <!-- Titulo del alero -->
+                    <div class="info-fiesta-gallo">                       
+                    </div>                   
+
+                    <!-- Foto del alero -->
+                    <div class="foto-fiesta-gallo"></div>
+                </div>
+
+                <div id="boton-redes-calendario">
+                </div>
+
+                <div class="titulo-ubicacion-fiesta-gallo">UBICACI&Oacute;N</div>
+
+                <div id="map-canvas-fiesta-gallo-calendario" class="map-canvas"></div>                
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+        <!---- FIN DETALLE FIESTA GALLO CALENDARIO -->
+
+
+        <!-- ### FORM INSERT USER -->
+        <div data-role="page" class="page-container page_insert_user" id="forminsertuser" data-theme="a" data-url="page_insert_user" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div>
+            
+            <!-- CONTAINER -->
+            <div data-role="main" class="ui-content">
+                <div class="titulo">CREA TU PERFIL</div>
+                
+                <div class="content_form">
+                    <form id="form-add-user">
+                        <label>Nombre</label>
+                        <input id="addUser-name" type="text" name="text-basic" value="">
+
+                        <label>Correo electronico</label>
+                        <input id="addUser-email" type="text" name="text-basic" value="">
+
+                        <label>Fecha de nacimiento</label>
+                        <input id="addUser-born" type="date" name="date" value="">
+
+                        <a class="typeButton buttonYellow" onclick="app.saveUserMovilManual()">Crear</a>
+                    </form>
+                </div>
+            </div>
+            <!-- END CONTAINER -->
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ### FORM LOGIN USER -->
+        <div data-role="page" class="page-container page_login_user" id="viewLoginManual" data-theme="a" data-url="page_login_user" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div>
+            
+            <!-- CONTAINER -->
+            <div data-role="main" class="ui-content">
+                <label for="text-basic">INICIAR SESI&Oacute;N</label>
+                <div class="content_form">
+                    <form id="form-login-user">
+                        <label for="text-basic">Nombre</label>
+                        <input id="loginUser-name" type="text" name="text-basic" value="">
+
+                        <label for="text-basic">Correo electronico:</label>
+                        <input id="loginUser-email" type="text" name="text-basic" value="">
+
+
+                        <a class="typeButton buttonYellow" onclick="app.loginUserMovilManual()">Entrar</a>
+
+                        <a href="#popupCloseRight" id="showLoginError" data-rel="popup" class="ui-btn ui-corner-all ui-shadow ui-btn-inline" style="display:none;">Right close button</a>
+                        <div data-role="popup" id="popupCloseRight" class="ui-content" style="max-width:280px">
+                            <a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+                        <p>Ha ocurrido un error. Por favor intente de nuevo.</p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- END CONTAINER -->
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- ### DETALLE MI FIESTA -->
+        <div data-role="page" class="page-container page_fiesta_gallo bg_pageBlack" id="detalle_mifiesta" data-theme="a" data-url="detalle_mifiesta" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+
+                <div data-role="tabs" id="tabs" class="menu_fiesta-gallo">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#fiestasgallo" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .fiestasgallo').click()">Fiestas Gallo</a></li>
+
+                            <li><a href="#misfiestas" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .misfiestas').click()">Mis fiestas</a></li>
+
+                            <li><a href="#invitaciones" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .invitaciones').click()">Invitaciones</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contenedor-mifiesta">
+                    <!-- Titulo del alero -->
+                    <div class="info-mifiesta">                       
+                    </div>                   
+
+                    <!-- Foto de la fiesta -->
+                    <div class="foto-mifiesta"></div>
+                </div>
+
+                <div id="boton-redes-mifiesta">
+                </div>
+
+                <div class="titulo-ubicacion-mifiesta">UBICACI&Oacute;N</div>
+
+                <div id="map-canvas-mifiesta" class="map-canvas"></div>                
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- ### DETALLE INVITACIONES -->
+        <div data-role="page" class="page-container page_invitaciones bg_pageBlack" id="detalle_invitacion" data-theme="a" data-url="detalle_invitacion" tabindex="0">
+            <div data-role="header">
+                <div class="container-logo">
+                    <a href="#mainpanel"><img src="img/menu.png"></a>
+                    <img src="img/logo-header-min.png">
+                </div>
+            </div><!-- /header -->
+
+            <div data-role="main" class="ui-content">
+
+                <div data-role="tabs" id="tabs" class="menu_fiesta-gallo">
+                    <div data-role="navbar">
+                        <ul>
+                            <li><a href="#fiestasgallo" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .fiestasgallo').click()">Fiestas Gallo</a></li>
+
+                            <li><a href="#misfiestas" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .misfiestas').click()">Mis fiestas</a></li>
+
+                            <li><a href="#invitaciones" onclick="$.mobile.changePage($('#quesigalafiesta'), { transition: 'slide' }); $('.page_homefista .invitaciones').click()">Invitaciones</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="contenedor-mifiesta">
+                    <!-- Titulo del alero -->
+                    <div class="info-invitacion">                       
+                    </div>                   
+
+                    <!-- Foto de la fiesta -->
+                    <div class="foto-invitacion"></div>
+                </div>
+
+                <div id="boton-redes-invitacion">
+                </div>
+
+                <div class="titulo-ubicacion-invitacion">UBICACI&Oacute;N</div>
+
+                <div id="map-canvas-invitacion" class="map-canvas"></div>                
+            </div>
+
+            <div data-role="footer" data-position="fixed">
+                <div class="container-footer">
+                    <a href="javascript:void(0);" data-rel="back" ><img src="img/atras.png"></a>
+                    <a href="#view-conectarusuario" class="perfilIcon"><img src="img/user.png"></a>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- LEVANTAR LISTADO DE AMIGOS --> <!--
+        <div data-role="popup" id="positionWindow" class="ui-content" data-theme="a">
+            <p>Listado de amigos</p>
+        </div>
+-->
+    
+
+        
+        <script type="text/javascript" src="cordova.js"></script>
+
+        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile-1.4.3.min.js"></script>
+        <script type="text/javascript" src="js/datepicker/jquery.ui.datepicker.js"></script>
+        <script type="text/javascript" src="js/datepicker/jquery.mobile.datepicker.js"></script>
+        <script type="text/javascript" src="js/xml2json.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>     
+        <script src="js/map.js" type="text/javascript"></script>
+        <script type="text/javascript" src="js/web.services.js"></script>
+        <script type="text/javascript" src="js/data.js"></script>
+        <script type="text/javascript" src="js/fastclick.js"></script>
+        <script type="text/javascript" src="js/jquery.bxslider.min.js"></script>
+        <script type="text/javascript" src="js/database.js"></script>
+        <script type="text/javascript" src="js/dateBox.js"></script>
+        <script type="text/javascript" src="js/SocialSharing.js"></script>
+
+        <script type="text/javascript" src="js/imagenesDinamicas.js"></script>
+        <script type="text/javascript" src="js/genUID.js"></script>
+        <script type="text/javascript" src="js/usuariounico.js"></script>
+
+         <script src="js/calendar/calendar.min.js"></script>
+    
+         <link href="js/calendar/calendar.min.css" rel="stylesheet">
+
+        <script type="text/javascript">
+            app.initialize();
+            
+            var linksDescargas;
+            app.getParametersLinks(function(links){
+                linksDescargas = links;
+            });
+
+            var OSName="unknown OS";
+            var linkSO = "";
+            if (navigator.appVersion.indexOf("Win")!=-1) OSName="Windows";
+            if (navigator.appVersion.indexOf("Mac")!=-1) OSName="MacOS";
+            if (navigator.appVersion.indexOf("X11")!=-1) OSName="UNIX";
+            if (navigator.appVersion.indexOf("Linux")!=-1) OSName="Linux";
+
+
+            switch(OSName)
+            {
+                case 'Linux':
+                linkSO = linksDescargas.android;
+                break;
+
+                case 'MacOS':
+                linkSO = linksDescargas.ios;
+                break;
+
+                default:
+                linkSO = linksDescargas.android;
+                break;
+            }
+
+            //var linkAppAndroid = linksDescargas.android;  //"https://play.google.com/store?hl=es_419"; 
+            //var linkAppIos = linksDescargas.ios;  //"https://itunes.apple.com/es/genre/ios/id36?mt=8";
+        </script>
+        <script id="panel-init">
+            $(function () {
+                $("body > [data-role='panel']").panel().enhanceWithin();
+            });
+
+            jQuery('.accordion h4').each(function() {
+                jQuery(this).click(function() {
+                    if(jQuery(this).next().is(':visible')) {
+                        jQuery(this).next().slideUp('slow');
+                    } else {
+                        jQuery(this).next().slideDown('slow');
+                    }
+                });
+            });
+
+            //var slider_promo;
+            jQuery(window).load(function() {
+                jQuery.mobile.defaultPageTransition='slide'; 
+                jQuery( "#fiestasgallolist" ).filterable({ input: "#searchfiestasgallolist" });
+                jQuery( "#misfistaslist" ).filterable({ input: "#searchmisfistaslist" });
+                jQuery( "#invitacioneslist" ).filterable({ input: "#searchinvitacioneslist" });
+                jQuery( "#aleroslist" ).filterable({ input: "#searchaleroslist" });
+
+                jQuery.extend(jQuery.mobile.datebox.prototype.options, {
+                    'overrideDateFormat': 'dd.mm.yyyy',
+                });
+                
+                jQuery('.hasDatepicker td').each(function() {
+                    if(jQuery(this).text() == '13') {
+                        jQuery(this).children('a').addClass('tipo-hoy');
+                    } else if(jQuery(this).text() == '17' || jQuery(this).text() == '31') {
+                        jQuery(this).children('a').addClass('tipo-evento');
+                    } else if(jQuery(this).text() == '27') {
+                        jQuery(this).children('a').addClass('tipo-concierto');
+                    }
+                });
+
+            });
+        </script>
+
+         <script>
+
+    
+
+
+
+    $(document).ready(function() {
+        var dateObj = new Date();
+        var month = dateObj.getMonth() + 1; //months from 1-12
+        var day = dateObj.getDate();
+        var year = dateObj.getFullYear();
+
+      //  newdate = year + "/" + month + "/" + day;
+
+        $(".fehca-calendario").text(day);
+        $(".dia-calendario").text(diasSemana[dateObj.getDay()]);
+
+        $(document).on('click','.calendar-day.have-events',activateDay);
+        $(document).on('click','.specific-day',activatecalendar);
+        $(document).on('click','.calendar-month-view-arrow',offsetcalendar);
+        $(window).resize(calendarScale);
+       // alert("aqui");
+        //etEventosCalendar();
+        /*$(".calendar").calendar();
+       */
+        $(".calendar").append('<div class="calendar-month-view"><div class="calendar-month-view-arrow" data-dir="left">&lsaquo;</div><p></p><div class="calendar-month-view-arrow" data-dir="right">&rsaquo;</div></div><div class="letrasDay"></div><div class="calendar-holder"><div class="calendar-grid"></div><div class="calendar-specific"><div class="specific-day"><div class="specific-day-info" i="day"></div><div class="specific-day-info" i="month"></div></div><div class="specific-day-scheme"></div></div></div>');
+    
+      //  calendarSet();
+       // calendarScale();/**/
+        //alert("din!));");
+            $('.container-logo a').click(function() {
+                tmpHeight = ($('.ui-page-active').height()+60);
+                $('#mainpanel').css({
+                    height: tmpHeight
+                });
+            });
+
+            $('h4#evento_ubicacion').click(function() {
+                setTimeout(function() {
+                    $('body').animate({scrollTop: $('.ui-page-active').height()}, '500', 'swing');
+                }, 200)
+            });
+
+        });
+    </script>
+
+        <script src="js/facebook/openfb.js"></script>
+
+        <script  type="text/javascript" src="js/facebook/misFuncionesFB.js" ></script>
+        <script  type="text/javascript" src="js/invitaciones.js" ></script>
+
+        <script type="text/javascript">
+            misFuncionesFB.iniciar();
+            app.printBotonesConexion();
+
+        </script>
+      </body>
+</html>
